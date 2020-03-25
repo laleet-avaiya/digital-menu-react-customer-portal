@@ -15,7 +15,11 @@ export default class Home extends Component {
       foodType: "",
       foodTypeOption: "",
       foodName: "",
-      foodPrice: ""
+      foodPrice: "",
+      veg: false,
+      non_veg: false,
+      pure_jain: false,
+      selectedFood:-1,
 
     }
 
@@ -26,6 +30,8 @@ export default class Home extends Component {
     this.changeTab = this.changeTab.bind(this);
     this.updateFoodName = this.updateFoodName.bind(this);
     this.updateFoodPrice = this.updateFoodPrice.bind(this);
+    this.updatePureVeg = this.updatePureVeg.bind(this);
+
   }
   async componentDidMount() {
     await this.authListener();
@@ -88,11 +94,11 @@ export default class Home extends Component {
           date_of_joining: Date.now(),
           menu: [
             {
-              type:"Drink",
-              items:[
+              type: "Drink",
+              items: [
                 {
-                  itemName:'test',
-                  price:50
+                  itemName: 'test',
+                  price: 0
                 }
               ]
             }
@@ -110,24 +116,34 @@ export default class Home extends Component {
     fire.database().ref('restaurant/' + this.state.user.uid + '/menu/' + this.state.data.menu.length).set(
       {
         type: this.state.foodType,
-        items:[
+        items: [
           {
-            itemName:'test',
-            price:0
+            itemName: 'test',
+            price: 0,
+            veg: false,
+            non_veg: false,
+            pure_jain: false,
           }
         ]
       }
-    ).then(() => this.setState({ foodType: "" }))
+    ).then(() => this.setState({ foodType: "",itemName: "",price: 0,veg: false,non_veg: false, pure_jain: false, }))
   }
 
-  insertFoodItem(){
+  insertFoodItem() {
     var url = 'restaurant/' + this.state.user.uid + '/menu/' + this.state.foodTypeOption + '/items/' + this.state.data.menu[this.state.foodTypeOption].items.length;
     fire.database().ref(url).set(
       {
-        itemName : this.state.foodName,
+        itemName: this.state.foodName,
         price: this.state.foodPrice,
+        veg: this.state.veg,
+        non_veg: this.state.non_veg,
+        pure_jain: this.state.pure_jain
       }
-    ).then()
+    ).then(
+      () => {
+        this.setState({ foodName: "", foodPrice: " ", veg: false, non_veg: false, pure_jain: false })
+      }
+    )
   }
 
   changeTab(tabIndex) {
@@ -137,18 +153,36 @@ export default class Home extends Component {
   handleChange = (event) => {
     this.setState({ [event.target.name]: event.target.value });
   }
+
+  updateVegNonVeg(event) {
+    var number = event.target.value;
+    if (number == 1)
+      this.setState({ veg: true, non_veg: false })
+    else if (number == 2)
+      this.setState({ veg: false, non_veg: true })
+  }
+
+  updatePureVeg() {
+    if(this.state.pure_jain)
+      this.setState({ pure_jain: !this.state.pure_jain })
+    else
+      this.setState({ pure_jain: !this.state.pure_jain,veg: true, non_veg: false })
+  }
+
+  updateSelectedFood(number){
+    this.setState({selectedFood:number})
+  }
   render() {
-    var { user, data, registration_step, tabIndex, foodTypeOption , foodName, foodPrice } = this.state;
+    var { user, data, registration_step, tabIndex, foodTypeOption, foodName, foodPrice, pure_jain,selectedFood } = this.state;
     return (
-      <div className="m-3">
+      <div className="mt-3 container">
         <div>
-          <p className="float-left">Email : {user ? user.email : null}</p>
-          <p className="float-right">Restaurant ID : {user ? user.uid : null} </p>
+          <p className="float-left font-weight-bold">Email : {user ? user.email : null}</p>
+          <p className="float-right font-weight-bold">Restaurant ID : {user ? user.uid : null} </p>
         </div>
         <br />
         <hr />
         <button type="button" className="btn btn-outline-primary m-1" onClick={() => this.changeTab(0)}>Add Food Type</button>
-        <button type="button" className="btn btn-outline-success m-1" onClick={() => this.changeTab(1)}>Add Food Item</button>
         <button type="button" className="btn btn-outline-danger m-1" onClick={() => this.changeTab(2)}>My Menu</button>
         <button type="button" className="btn btn-outline-warning m-1" onClick={() => this.changeTab(3)}> My QR Code</button>
         <button type="button" className="btn btn-outline-info m-1 float-right" onClick={this.logout}> Logout</button>
@@ -157,7 +191,7 @@ export default class Home extends Component {
         {
           tabIndex === 0 && data ?
             <div className="row food-type">
-              <div className="col-6">
+              <div className="col-3">
 
                 <div className="form-group">
                   <label htmlFor="foodType font-weight-bold">Food Type</label>
@@ -173,7 +207,7 @@ export default class Home extends Component {
                 <button type="button" className="btn btn-outline-success m-1" onClick={() => this.insertFoodType()}>Add</button>
 
               </div>
-              <div className="col-6">
+              <div className="col-5">
 
                 <table className="table table-bordered">
                   <thead>
@@ -197,65 +231,139 @@ export default class Home extends Component {
                   </tbody>
                 </table>
               </div>
-            </div>
-            : tabIndex === 1 && data ?
 
-              <div className="add-item">
-                <form>
-                  <div className="col-auto my-1 w-50">
-                    <label className="mr-sm-2" htmlFor="inlineFormCustomSelect">Select Food Type</label>
-                    <select name="foodTypeOption"
-                    className="custom-select mr-sm-2"
-                    id="inlineFormCustomSelect"
-                    onChange={this.handleChange}
-                    >
-                      <option selected>Choose...</option>
-                      {data.menu.map((item, index) => { return <option className="text-capitalize" value={index}>{item.type}</option> })}
-                    </select>
-                  </div>
+              <div className="col-4">
+                <div className="add-item bg-light rounded py-3">
+                  <form>
+                    <div className="col-auto my-1">
+                      <label className="mr-sm-2" htmlFor="inlineFormCustomSelect">Select Food Type</label>
+                      <select name="foodTypeOption"
+                        className="custom-select mr-sm-2"
+                        id="inlineFormCustomSelect"
+                        onChange={this.handleChange}
+                      >
+                        <option selected>Choose...</option>
+                        {data.menu.map((item, index) => { return <option className="text-capitalize" value={index}>{item.type}</option> })}
+                      </select>
+                    </div>
 
-                  <div className="col-auto my-1 w-50">
-                    <label className="mr-sm-2" htmlFor="itemName">Food Name</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="foodItemName"
-                      placeholder="Enter Food Name"
-                      value={this.state.foodName}
-                      onChange={evt => this.updateFoodName(evt)}
-                    />
-                  </div>
+                    <div className="col-auto my-1">
+                      <label className="mr-sm-2" htmlFor="itemName">Food Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="foodItemName"
+                        placeholder="Enter Food Name"
+                        value={this.state.foodName}
+                        onChange={evt => this.updateFoodName(evt)}
+                      />
+                    </div>
 
-                  <div className="col-auto my-1 w-50">
-                    <label className="mr-sm-2" htmlFor="itemPrice">Food Price</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="foodPrice"
-                      placeholder="Enter Food Price"
-                      value={this.state.foodPrice}
-                      onChange={evt => this.updateFoodPrice(evt)}
-                    />
-                  </div>
-                  <button type="button" className="btn btn-outline-success m-1" onClick={() => this.insertFoodItem()}>Add Item</button>
+                    <div className="col-auto my-1">
+                      <label className="mr-sm-2" htmlFor="itemPrice">Food Price</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id="foodPrice"
+                        placeholder="Enter Food Price"
+                        value={this.state.foodPrice}
+                        onChange={evt => this.updateFoodPrice(evt)}
+                      />
+                    </div>
 
-                </form>
-                <p>veg ?</p>
-                <p>Non Veg?</p>
-                <p>Without Onion and Garlic ?</p>
-                <p>Pure Jain?</p>
-              </div>
 
-              : tabIndex === 2 ?
+                    <div className="col-auto my-1">
+                      <label className="mr-sm-2" htmlFor="inlineFormCustomSelect">Veg / Non Veg</label>
+                      <select name="veg"
+                        className="custom-select mr-sm-2"
+                        id="inlineFormCustomSelect"
+                        onChange={this.updateVegNonVeg}
+                      >
+                        <option selected>Choose...</option>
+                        <option className="text-capitalize" value={1}>Veg</option>
+                        <option className="text-capitalize" value={2}>Non-Veg</option>
+                      </select>
+                    </div>
+                    <br />
+                    {/* <div className="col-auto mx-1">
+                      <label className="mr-sm-2" htmlFor="inlineFormCustomSelect">Pure Jain</label>
+                      <label className="switch">
+                        <input type="checkbox" checked={pure_jain} onChange={this.updatePureVeg} />
+                        <span className="slider rounded"></span>
+                      </label>
+                    </div>
+                    <div className="col-auto mx-1">
+                      <label className="mr-sm-2" htmlFor="inlineFormCustomSelect">Pure Jain</label>
+                      <label className="switch">
+                        <input type="checkbox" checked={pure_jain} onChange={this.updatePureVeg} />
+                        <span className="slider rounded"></span>
+                      </label>
+                    </div> */}
 
-                <div className="my-menu">
-                  My Menu
+                    <div className="col-auto mx-1">
+                      <label className="mr-sm-2" htmlFor="inlineFormCustomSelect">Pure Jain</label>
+                      <label className="switch">
+                        <input type="checkbox" checked={pure_jain} onChange={this.updatePureVeg} />
+                        <span className="slider rounded"></span>
+                      </label>
+                    </div>
+                    <div className="p-3">
+                      <button type="button" className="btn btn-outline-success my-3 w-100" onClick={() => this.insertFoodItem()}>Add Item</button>
+                    </div>
+                  </form>
+
                 </div>
 
-                :
+              </div>
+            </div>
+            : tabIndex === 2 && data ?
+              <div className="my-menu">
 
-                <div className="qr-code">
-                  QR Code
+                <div className="row">
+
+                  <div className="col-4">
+                    <h3>Food Types</h3>
+                    <table className="table table-bordered">
+                      <tbody>
+                        {data.menu.map((item, index) => {
+                          return <tr key={index}>
+                            <td className="text-capitalize">{item.type}</td>
+                            <td><span className="badge badge-pill badge-danger m-1"
+                              onClick={() => {
+                                if (window.confirm('Are you sure you wish to delete this item?'))
+                                  this.deleteFoodType(index)
+                              }}
+                            >Delete</span></td>
+                             <td><span className="badge badge-pill badge-info m-1"
+                              onClick={() => this.updateSelectedFood(index)}
+                            >View Food Item</span></td>
+                          </tr>
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                  {
+                    selectedFood > -1?<div className="col-8">
+                    <h3>Food Items</h3>
+                  {data.menu[selectedFood].items.map((item, index) => {
+                    return <div className="card m-2 p-2">
+                        <li>{item.itemName}</li>
+                        <li>{item.price}</li>
+                        <li>{item.veg ? "Veg" : ""}</li>
+                        <li>{item.non_veg ? "Non Veg": ""}</li>
+                        <li>{item.pure_jain ? "Jain":""}</li>
+                    </div>
+                  })
+                  }
+                  </div>:<div className="col-8"></div>
+                  }
+                </div>
+              </div>
+
+              :
+
+              <div className="qr-code">
+                QR Code
         </div>
 
         }
