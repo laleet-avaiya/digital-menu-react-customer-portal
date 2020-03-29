@@ -1,5 +1,7 @@
 body {
   margin: 0;
+  padding: 0;
+  overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -78,4 +80,54 @@ input:checked + .slider:before {
 
 label{
   font-weight: 500;
+}
+
+.main-page{
+  font-family: 'Courier New', Courier, monospace;
+  height: 100vh;
+  overflow: hidden;
+  
+}
+
+.food-type{
+  border-radius: 20px;
+}
+
+.round-box{
+  border-radius: 20px;
+}
+.menu-type-list{
+  overflow: auto;
+  height: 500px;
+}
+.menu-items{
+  overflow: auto;
+  height: 500px;
+}
+
+.vertical-line{
+  border-right: 2px dashed grey;
+  height: 100vh;
+}
+.left-menu{
+  margin-top: 100px;
+}
+
+
+.side-menu{
+  background-color: #273038;
+  border-radius: 20px;
+  padding: 60px 0px 60px 4px;
+}
+
+.dashboard-title{
+  padding-top: 10px;
+  font-weight: 700;
+}
+
+.qr-code{
+  text-align: center;
+}
+.qr-code-box{
+  display: inline-block;
 }
