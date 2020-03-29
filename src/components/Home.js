@@ -30,6 +30,7 @@ export default class Home extends Component {
     this.changeTab = this.changeTab.bind(this);
     this.updateFoodName = this.updateFoodName.bind(this);
     this.updateFoodPrice = this.updateFoodPrice.bind(this);
+    this.updateNonVeg = this.updateNonVeg.bind(this);
     this.updatePureVeg = this.updatePureVeg.bind(this);
 
   }
@@ -154,14 +155,22 @@ export default class Home extends Component {
     this.setState({ [event.target.name]: event.target.value });
   }
 
-  updateVegNonVeg(event) {
-    var number = event.target.value;
-    if (number == 1)
-      this.setState({ veg: true, non_veg: false })
-    else if (number == 2)
-      this.setState({ veg: false, non_veg: true })
-  }
+  // updateVegNonVeg(event) {
+  //   var number = event.target.value;
+  //   alert(number);
+  //   if (number === 1)
+  //     this.setState({ veg: true, non_veg: false })
+  //   else if (number === 2)
+  //     this.setState({ veg: false, non_veg: true })
+  //     alert(this.state.non_veg);
+  // }
 
+  updateNonVeg(){
+    if(this.state.non_veg)
+      this.setState({ non_veg: !this.state.non_veg , veg:true })
+    else
+    this.setState({ pure_jain: false,veg: false, non_veg: true })
+  }
   updatePureVeg() {
     if(this.state.pure_jain)
       this.setState({ pure_jain: !this.state.pure_jain })
@@ -173,7 +182,7 @@ export default class Home extends Component {
     this.setState({selectedFood:number})
   }
   render() {
-    var { user, data, registration_step, tabIndex, foodTypeOption, foodName, foodPrice, pure_jain,selectedFood } = this.state;
+    var { user, data, registration_step, tabIndex, foodTypeOption, foodName, foodPrice,non_veg, pure_jain,selectedFood } = this.state;
     return (
       <div className="mt-3 container">
         <div>
@@ -272,7 +281,7 @@ export default class Home extends Component {
                     </div>
 
 
-                    <div className="col-auto my-1">
+                    {/* <div className="col-auto my-1">
                       <label className="mr-sm-2" htmlFor="inlineFormCustomSelect">Veg / Non Veg</label>
                       <select name="veg"
                         className="custom-select mr-sm-2"
@@ -285,7 +294,7 @@ export default class Home extends Component {
                       </select>
                     </div>
                     <br />
-                    {/* <div className="col-auto mx-1">
+                    <div className="col-auto mx-1">
                       <label className="mr-sm-2" htmlFor="inlineFormCustomSelect">Pure Jain</label>
                       <label className="switch">
                         <input type="checkbox" checked={pure_jain} onChange={this.updatePureVeg} />
@@ -301,7 +310,15 @@ export default class Home extends Component {
                     </div> */}
 
                     <div className="col-auto mx-1">
-                      <label className="mr-sm-2" htmlFor="inlineFormCustomSelect">Pure Jain</label>
+                      <label className="mr-sm-2" htmlFor="non_veg">Non - Veg</label>
+                      <label className="switch">
+                        <input type="checkbox" checked={non_veg} onChange={this.updateNonVeg} />
+                        <span className="slider rounded"></span>
+                      </label>
+                    </div>
+                    
+                    <div className="col-auto mx-1">
+                      <label className="mr-sm-2" htmlFor="inlineFormCustomSelect">Pure  Jain</label>
                       <label className="switch">
                         <input type="checkbox" checked={pure_jain} onChange={this.updatePureVeg} />
                         <span className="slider rounded"></span>
