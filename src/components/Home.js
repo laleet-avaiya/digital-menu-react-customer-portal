@@ -255,7 +255,6 @@ export default class Home extends Component {
             style={{
               textAlign: "center",
               color: "white",
-              // borderTop: "1px solid white",
             }}
           >
             <button
@@ -305,160 +304,188 @@ export default class Home extends Component {
           </div>
 
           <div className="p-4 right-dashboard col-11">
-            <br />
-            <br />
             {tabIndex === 0 && data ? (
-              <div className="row food-type">
-                <div className="col-3 vertical-line">
-                  <div className="form-group ">
-                    <label htmlFor="foodType font-weight-bold">Food Type</label>
-                    <input
-                      type="text"
-                      className="form-control w-75"
-                      id="foodType"
-                      placeholder="Enter food type"
-                      value={this.state.foodType}
-                      onChange={(evt) => this.updateFoodType(evt)}
-                    />
+              <div>
+                <div className="row mx-1">
+                  <div className="form-group">
+                    <label style={{ fontWeight: "bold", fontFamily: "arial" }}>
+                      Food Types
+                    </label>
                   </div>
-                  <button
-                    type="button"
-                    className="btn btn-outline-success m-1"
-                    onClick={() => this.insertFoodType()}
-                  >
-                    Add
-                  </button>
-                </div>
-                <div className="col-5">
-                  <table className="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th scope="col">Food Types</th>
-                        <th scope="col">Action</th>
-                      </tr>
-                    </thead>
+                  <table className="table table-bordered w-100">
                     <tbody>
                       {data.menu.map((item, index) => {
                         return (
-                          <tr key={index}>
-                            <td className="text-capitalize">{item.type}</td>
-                            <td>
-                              <span
-                                className="badge badge-pill badge-danger m-1"
-                                onClick={() => {
-                                  if (
-                                    window.confirm(
-                                      "Are you sure you wish to delete this item?"
-                                    )
+                          <button
+                            type="button"
+                            className="btn btn-light text-capitalize m-1"
+                            style={{
+                              backgroundColor: "#ffffff",
+                              fontWeight: "bold",
+                            }}
+                            key={index}
+                          >
+                            {item.type}
+                            <span
+                              className="badge badge-danger ml-1"
+                              onClick={() => {
+                                if (
+                                  window.confirm(
+                                    "Are you sure you wish to delete this item?"
                                   )
-                                    this.deleteFoodType(index);
-                                }}
-                              >
-                                X
-                              </span>
-                            </td>
-                          </tr>
+                                )
+                                  this.deleteFoodType(index);
+                              }}
+                            >
+                              X
+                            </span>
+                          </button>
                         );
                       })}
                     </tbody>
                   </table>
                 </div>
 
-                <div className="col-4">
-                  <div className="add-item bg-light rounded py-3">
-                    <form>
-                      <div className="col-auto my-1">
-                        <label
-                          className="mr-sm-2"
-                          htmlFor="inlineFormCustomSelect"
-                        >
-                          Select Food Type
-                        </label>
-                        <select
-                          name="foodTypeOption"
-                          className="custom-select mr-sm-2"
-                          id="inlineFormCustomSelect"
-                          onChange={this.handleChange}
-                        >
-                          <option selected>Choose...</option>
-                          {data.menu.map((item, index) => {
-                            return (
-                              <option className="text-capitalize" value={index}>
-                                {item.type}
-                              </option>
-                            );
-                          })}
-                        </select>
-                      </div>
+                <div className="row px-4 mt-3">
+                  <div className="col-1"></div>
+                  <div
+                    className="col-3 card h-25 p-0"
+                    style={{ boxShadow: "5px 10px #888888" }}
+                  >
+                    <div className="m-0 nav navbar navbar-expand-sm bg-success navbar-success text-white justify-content-center">
+                      <h6 style={{ fontWeight: "bold" }}> Add Food Type</h6>
+                    </div>
 
-                      <div className="col-auto my-1">
-                        <label className="mr-sm-2" htmlFor="itemName">
-                          Food Name
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="foodItemName"
-                          placeholder="Enter Food Name"
-                          value={this.state.foodName}
-                          onChange={(evt) => this.updateFoodName(evt)}
-                        />
-                      </div>
+                    <div className="form-group m-2">
+                      <input
+                        type="text"
+                        className="form-control mt-3"
+                        id="foodType"
+                        placeholder="Enter food type"
+                        value={this.state.foodType}
+                        onChange={(evt) => this.updateFoodType(evt)}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      className="btn btn-outline-success m-2"
+                      onClick={() => this.insertFoodType()}
+                    >
+                      Add
+                    </button>
+                  </div>
 
-                      <div className="col-auto my-1">
-                        <label className="mr-sm-2" htmlFor="itemPrice">
-                          Food Price
-                        </label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          id="foodPrice"
-                          placeholder="Enter Food Price"
-                          value={this.state.foodPrice}
-                          onChange={(evt) => this.updateFoodPrice(evt)}
-                        />
-                      </div>
-                      <br />
-                      <div className="col-auto mx-1">
-                        <label className="mr-sm-2" htmlFor="non_veg">
-                          Non - Veg
-                        </label>
-                        <label className="switch">
-                          <input
-                            type="checkbox"
-                            checked={non_veg}
-                            onChange={this.updateNonVeg}
-                          />
-                          <span className="slider rounded"></span>
-                        </label>
-                      </div>
+                  <div className="col-2"></div>
 
-                      <div className="col-auto mx-1">
-                        <label
-                          className="mr-sm-2"
-                          htmlFor="inlineFormCustomSelect"
-                        >
-                          Pure Jain
-                        </label>
-                        <label className="switch">
-                          <input
-                            type="checkbox"
-                            checked={pure_jain}
-                            onChange={this.updatePureVeg}
-                          />
-                          <span className="slider rounded"></span>
-                        </label>
+                  <div
+                    className="col-4 card m-0 p-0"
+                    style={{ boxShadow: "5px 10px #888888" }}
+                  >
+                    <div className="m-0 nav navbar navbar-expand-sm bg-success navbar-success text-white justify-content-center">
+                      <h6 style={{ fontWeight: "bold" }}> Add Food Item</h6>
+                    </div>
+
+                    <div className="p-2 mt-3">
+                      <div className="add-item rounded">
+                        <form>
+                          <div>
+                            <label
+                              htmlFor="inlineFormCustomSelect"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              Select Food Type
+                            </label>
+                            <select
+                              name="foodTypeOption"
+                              className="custom-select"
+                              id="inlineFormCustomSelect"
+                              onChange={this.handleChange}
+                            >
+                              <option selected>Choose...</option>
+                              {data.menu.map((item, index) => {
+                                return (
+                                  <option
+                                    className="text-capitalize"
+                                    value={index}
+                                  >
+                                    {item.type}
+                                  </option>
+                                );
+                              })}
+                            </select>
+                          </div>
+
+                          <div>
+                            <label
+                              htmlFor="itemName"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              Food Name
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="foodItemName"
+                              placeholder="Enter Food Name"
+                              value={this.state.foodName}
+                              onChange={(evt) => this.updateFoodName(evt)}
+                            />
+                          </div>
+
+                          <div>
+                            <label
+                              htmlFor="itemPrice"
+                              style={{ fontWeight: "bold" }}
+                            >
+                              Food Price
+                            </label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              id="foodPrice"
+                              placeholder="Enter Food Price"
+                              value={this.state.foodPrice}
+                              onChange={(evt) => this.updateFoodPrice(evt)}
+                            />
+                          </div>
+                          <br />
+                          <div>
+                            <label htmlFor="non_veg">Non - Veg</label>
+                            <label className="switch mx-3">
+                              <input
+                                type="checkbox"
+                                checked={non_veg}
+                                onChange={this.updateNonVeg}
+                              />
+                              <span className="slider rounded"></span>
+                            </label>
+                          </div>
+
+                          <div>
+                            <label htmlFor="inlineFormCustomSelect">
+                              Pure Jain
+                            </label>
+                            <label className="switch mx-3">
+                              <input
+                                type="checkbox"
+                                checked={pure_jain}
+                                onChange={this.updatePureVeg}
+                              />
+                              <span className="slider rounded"></span>
+                            </label>
+                          </div>
+                          <div>
+                            <button
+                              type="button"
+                              className="btn btn-outline-success w-100 mt-2"
+                              onClick={() => this.insertFoodItem()}
+                            >
+                              Add Item
+                            </button>
+                          </div>
+                        </form>
                       </div>
-                      <div className="p-3">
-                        <button
-                          type="button"
-                          className="btn btn-outline-success my-3 w-100"
-                          onClick={() => this.insertFoodItem()}
-                        >
-                          Add Item
-                        </button>
-                      </div>
-                    </form>
+                    </div>
                   </div>
                 </div>
               </div>
