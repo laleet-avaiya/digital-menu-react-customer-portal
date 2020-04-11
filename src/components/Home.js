@@ -16,7 +16,7 @@ export default class Home extends Component {
       foodTypeOption: "",
       foodName: "",
       foodPrice: "",
-      veg: false,
+      veg: true,
       non_veg: false,
       pure_jain: false,
       selectedFood: -1,
