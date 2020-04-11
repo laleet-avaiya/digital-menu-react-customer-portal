@@ -2,18 +2,18 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  /* font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace; */
 }
-
 
 /* The switch - the box around the slider */
 .switch {
@@ -39,8 +39,8 @@ code {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -51,8 +51,8 @@ code {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
@@ -78,56 +78,54 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
-label{
+label {
   font-weight: 500;
 }
 
-.main-page{
-  font-family: 'Courier New', Courier, monospace;
+.main-page {
+  /* font-family: "Courier New", Courier, monospace; */
   height: 100vh;
   overflow: hidden;
-  
 }
 
-.food-type{
+.food-type {
   border-radius: 20px;
 }
 
-.round-box{
+.round-box {
   border-radius: 20px;
 }
-.menu-type-list{
+.menu-type-list {
   overflow: auto;
   height: 500px;
 }
-.menu-items{
+.menu-items {
   overflow: auto;
   height: 500px;
 }
 
-.vertical-line{
+.vertical-line {
   border-right: 2px dashed grey;
   height: 100vh;
 }
-.left-menu{
+.left-menu {
   margin-top: 100px;
 }
 
-
-.side-menu{
+.side-menu {
   background-color: #273038;
   border-radius: 20px;
   padding: 60px 0px 60px 4px;
 }
 
-.dashboard-title{
+.dashboard-title {
   padding-top: 10px;
   font-weight: 700;
 }
 
-.qr-code{
+.qr-code {
   text-align: center;
 }
-.qr-code-box{
+.qr-code-box {
   display: inline-block;
 }

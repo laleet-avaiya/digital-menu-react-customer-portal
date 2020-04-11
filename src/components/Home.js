@@ -386,7 +386,7 @@ export default class Home extends Component {
                     </div>
 
                     <div className="p-2 mt-3">
-                      <div className="add-item rounded">
+                      <div className="add-item rounded mx-2">
                         <form>
                           <div>
                             <label
@@ -465,7 +465,7 @@ export default class Home extends Component {
                             <label htmlFor="inlineFormCustomSelect">
                               Pure Jain
                             </label>
-                            <label className="switch mx-3">
+                            <label className="switch mx-4">
                               <input
                                 type="checkbox"
                                 checked={pure_jain}
@@ -491,33 +491,45 @@ export default class Home extends Component {
               </div>
             ) : tabIndex === 2 && data ? (
               <div className="my-menu">
-                <div className="row">
-                  <div className="col-3">
-                    <h3>Food Types</h3>
-                    <table className="table table-bordered">
-                      <tbody className="menu-type-list">
+                <div>
+                  <div className="row mx-1">
+                    <div className="form-group">
+                      <label
+                        style={{ fontWeight: "bold", fontFamily: "arial" }}
+                      >
+                        Food Types
+                      </label>
+                    </div>
+                    <table className="table table-bordered w-100">
+                      <tbody>
                         {data.menu.map((item, index) => {
                           return (
-                            <tr key={index}>
-                              <td className="text-capitalize">{item.type}</td>
-                              <td>
-                                <span
-                                  className="badge badge-pill badge-info m-1"
-                                  onClick={() => this.updateSelectedFood(index)}
-                                >
-                                  View
-                                </span>
-                              </td>
-                            </tr>
+                            <button
+                              type="button"
+                              className="btn btn-light text-capitalize m-1"
+                              style={{
+                                backgroundColor: "#ffffff",
+                                fontWeight: "bold",
+                              }}
+                              key={index}
+                            >
+                              {item.type}
+                              <span
+                                className="badge badge-info ml-1"
+                                onClick={() => this.updateSelectedFood(index)}
+                              >
+                                View
+                              </span>
+                            </button>
                           );
                         })}
                       </tbody>
                     </table>
                   </div>
+                </div>
+                <div className="row">
                   {selectedFood > -1 ? (
-                    <div className="col-9 menu-items">
-                      <h3>Food Items</h3>
-
+                    <div className="mx-3 menu-items w-100">
                       <table className="table table-bordered">
                         {data.menu[selectedFood].items.length > 0 ? (
                           <thead>
@@ -544,13 +556,13 @@ export default class Home extends Component {
                                 </td>
                                 <td className="text-center">{item.price}</td>
                                 <td className="text-center">
-                                  {item.veg ? "Veg" : "---"}
+                                  {item.veg ? "Veg" : "*"}
                                 </td>
                                 <td className="text-center">
-                                  {item.pure_jain ? "Jain" : "---"}
+                                  {item.pure_jain ? "Jain" : "*"}
                                 </td>
                                 <td className="text-center">
-                                  {item.non_veg ? "Non Veg" : "---"}
+                                  {item.non_veg ? "Non Veg" : "*"}
                                 </td>
 
                                 <td>
