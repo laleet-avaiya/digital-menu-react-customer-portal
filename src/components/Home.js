@@ -126,47 +126,47 @@ export default class Home extends Component {
       .remove();
   }
 
-  insertFoodType() {
+  deleteFoodItem(index, itemIndex) {
     fire
       .database()
       .ref(
         "restaurant/" +
           this.state.user.uid +
           "/menu/" +
-          this.state.data.menu.length
+          index +
+          "/items/" +
+          itemIndex
       )
-      .set({
-        type: this.state.foodType,
-        items: [
-          {
-            itemName: "test",
-            price: 0,
-            veg: false,
-            non_veg: false,
-            pure_jain: false,
-          },
-        ],
-      })
+      .remove();
+    this.setState({ selectedFood: -1 });
+  }
+
+  insertFoodType() {
+    var length = this.state.data.menu ? this.state.data.menu.length : 0;
+    fire
+      .database()
+      .ref("restaurant/" + this.state.user.uid + "/menu/" + length)
+      .set({ type: this.state.foodType })
       .then(() =>
         this.setState({
           foodType: "",
           itemName: "",
-          price: 0,
-          veg: false,
-          non_veg: false,
-          pure_jain: false,
         })
       );
   }
 
   insertFoodItem() {
+    alert(this.state.veg);
+    var length = this.state.data.menu[this.state.foodTypeOption].items
+      ? this.state.data.menu[this.state.foodTypeOption].items.length
+      : 0;
     var url =
       "restaurant/" +
       this.state.user.uid +
       "/menu/" +
       this.state.foodTypeOption +
       "/items/" +
-      this.state.data.menu[this.state.foodTypeOption].items.length;
+      length;
     fire
       .database()
       .ref(url)
@@ -181,7 +181,7 @@ export default class Home extends Component {
         this.setState({
           foodName: "",
           foodPrice: " ",
-          veg: false,
+          veg: true,
           non_veg: false,
           pure_jain: false,
         });
@@ -314,34 +314,36 @@ export default class Home extends Component {
                   </div>
                   <table className="table table-bordered w-100">
                     <tbody>
-                      {data.menu.map((item, index) => {
-                        return (
-                          <button
-                            type="button"
-                            className="btn btn-light text-capitalize m-1"
-                            style={{
-                              backgroundColor: "#ffffff",
-                              fontWeight: "bold",
-                            }}
-                            key={index}
-                          >
-                            {item.type}
-                            <span
-                              className="badge badge-danger ml-1"
-                              onClick={() => {
-                                if (
-                                  window.confirm(
-                                    "Are you sure you wish to delete this item?"
-                                  )
-                                )
-                                  this.deleteFoodType(index);
-                              }}
-                            >
-                              X
-                            </span>
-                          </button>
-                        );
-                      })}
+                      {data.menu
+                        ? data.menu.map((item, index) => {
+                            return (
+                              <button
+                                type="button"
+                                className="btn btn-light text-capitalize m-1"
+                                style={{
+                                  backgroundColor: "#ffffff",
+                                  fontWeight: "bold",
+                                }}
+                                key={index}
+                              >
+                                {item.type}
+                                <span
+                                  className="badge badge-danger ml-1"
+                                  onClick={() => {
+                                    if (
+                                      window.confirm(
+                                        "Are you sure you wish to delete this item?"
+                                      )
+                                    )
+                                      this.deleteFoodType(index);
+                                  }}
+                                >
+                                  X
+                                </span>
+                              </button>
+                            );
+                          })
+                        : null}
                     </tbody>
                   </table>
                 </div>
@@ -402,16 +404,18 @@ export default class Home extends Component {
                               onChange={this.handleChange}
                             >
                               <option selected>Choose...</option>
-                              {data.menu.map((item, index) => {
-                                return (
-                                  <option
-                                    className="text-capitalize"
-                                    value={index}
-                                  >
-                                    {item.type}
-                                  </option>
-                                );
-                              })}
+                              {data.menu
+                                ? data.menu.map((item, index) => {
+                                    return (
+                                      <option
+                                        className="text-capitalize"
+                                        value={index}
+                                      >
+                                        {item.type}
+                                      </option>
+                                    );
+                                  })
+                                : null}
                             </select>
                           </div>
 
@@ -502,27 +506,31 @@ export default class Home extends Component {
                     </div>
                     <table className="table table-bordered w-100">
                       <tbody>
-                        {data.menu.map((item, index) => {
-                          return (
-                            <button
-                              type="button"
-                              className="btn btn-light text-capitalize m-1"
-                              style={{
-                                backgroundColor: "#ffffff",
-                                fontWeight: "bold",
-                              }}
-                              key={index}
-                            >
-                              {item.type}
-                              <span
-                                className="badge badge-info ml-1"
-                                onClick={() => this.updateSelectedFood(index)}
-                              >
-                                View
-                              </span>
-                            </button>
-                          );
-                        })}
+                        {data.menu
+                          ? data.menu.map((item, index) => {
+                              return (
+                                <button
+                                  type="button"
+                                  className="btn btn-light text-capitalize m-1"
+                                  style={{
+                                    backgroundColor: "#ffffff",
+                                    fontWeight: "bold",
+                                  }}
+                                  key={index}
+                                >
+                                  {item.type}
+                                  <span
+                                    className="badge badge-info ml-1"
+                                    onClick={() =>
+                                      this.updateSelectedFood(index)
+                                    }
+                                  >
+                                    View
+                                  </span>
+                                </button>
+                              );
+                            })
+                          : null}
                       </tbody>
                     </table>
                   </div>
@@ -531,7 +539,8 @@ export default class Home extends Component {
                   {selectedFood > -1 ? (
                     <div className="mx-3 menu-items w-100">
                       <table className="table table-bordered">
-                        {data.menu[selectedFood].items.length > 0 ? (
+                        {data.menu[selectedFood].items &&
+                        data.menu[selectedFood].items.length > 0 ? (
                           <thead>
                             <tr>
                               <td className="text-capitalize">Sr. No.</td>
@@ -547,57 +556,71 @@ export default class Home extends Component {
                           <div></div>
                         )}
                         <tbody>
-                          {data.menu[selectedFood].items.map((item, index) => {
-                            return (
-                              <tr key={index}>
-                                <td className="text-center">{index + 1}</td>
-                                <td className="text-capitalize">
-                                  {item.itemName}
-                                </td>
-                                <td className="text-center">{item.price}</td>
-                                <td className="text-center">
-                                  {item.veg ? "Veg" : "*"}
-                                </td>
-                                <td className="text-center">
-                                  {item.pure_jain ? "Jain" : "*"}
-                                </td>
-                                <td className="text-center">
-                                  {item.non_veg ? "Non Veg" : "*"}
-                                </td>
+                          {data.menu[selectedFood].items
+                            ? data.menu[selectedFood].items.map(
+                                (item, index) => {
+                                  return (
+                                    <tr key={index}>
+                                      <td className="text-center">
+                                        {index + 1}
+                                      </td>
+                                      <td className="text-capitalize">
+                                        {item.itemName}
+                                      </td>
+                                      <td className="text-center">
+                                        {item.price}
+                                      </td>
+                                      <td className="text-center">
+                                        {item.veg ? "Veg" : "*"}
+                                      </td>
+                                      <td className="text-center">
+                                        {item.pure_jain ? "Jain" : "*"}
+                                      </td>
+                                      <td className="text-center">
+                                        {item.non_veg ? "Non Veg" : "*"}
+                                      </td>
 
-                                <td>
-                                  <span
-                                    className="badge badge-pill badge-info m-1"
-                                    onClick={() => {
-                                      if (
-                                        window.confirm(
-                                          "Are you sure you wish to delete this item?"
-                                        )
-                                      )
-                                        this.deleteFoodType(index);
-                                    }}
-                                  >
-                                    {" "}
-                                    U{" "}
-                                  </span>
-                                  <span
-                                    className="badge badge-pill badge-danger m-1"
-                                    onClick={() => {
-                                      if (
-                                        window.confirm(
-                                          "Are you sure you wish to delete this item?"
-                                        )
-                                      )
-                                        this.deleteFoodType(index);
-                                    }}
-                                  >
-                                    {" "}
-                                    X{" "}
-                                  </span>
-                                </td>
-                              </tr>
-                            );
-                          })}
+                                      <td>
+                                        <span
+                                          className="badge badge-pill badge-info m-1"
+                                          onClick={() => {
+                                            if (
+                                              window.confirm(
+                                                "Are you sure you wish to delete this item?"
+                                              )
+                                            )
+                                              this.deleteFoodItem(index);
+                                          }}
+                                        >
+                                          {" "}
+                                          U{" "}
+                                        </span>
+                                        <span
+                                          className="badge badge-pill badge-danger m-1"
+                                          onClick={() => {
+                                            if (
+                                              window.confirm(
+                                                "Are you sure you wish to delete this item?" +
+                                                  selectedFood +
+                                                  " " +
+                                                  index
+                                              )
+                                            )
+                                              this.deleteFoodItem(
+                                                selectedFood,
+                                                index
+                                              );
+                                          }}
+                                        >
+                                          {" "}
+                                          X{" "}
+                                        </span>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              )
+                            : null}
                         </tbody>
                       </table>
                     </div>
