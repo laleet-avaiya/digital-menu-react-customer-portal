@@ -97,12 +97,11 @@ export default class Home extends Component {
           .set({
             admin_email: this.state.user.email,
             restaurant_id: this.state.user.uid,
-            restaurant_name: "Ashish Restaurant",
-            restaurant_address:
-              "102 - 103, Sai Residency, Amroli Katargam Road, Near Gajera School, Katargam, Surat",
-            restaurant_phone: "9897969599",
-            contact_person_name: "Aniket Patel",
-            contact_person_phone: "7874353232",
+            restaurant_name: false,
+            restaurant_address: false,
+            restaurant_phone: false,
+            contact_person_name: false,
+            contact_person_phone: false,
             date_of_joining: Date.now(),
             menu: [
               {
@@ -245,57 +244,67 @@ export default class Home extends Component {
       qr_code_url,
     } = this.state;
     return (
-      <div style={{ backgroundColor: "#f7f7f7", height: "100vh" }}>
-        <div className="row p-4 main-page">
-          <div className="right-dashboard col-12">
-            <div className="float-left">
-              <h3 className="dashboard-title">My Dashboard</h3>
-            </div>
-            <div className="float-right">
-              <button
-                type="button"
-                className="btn btn-outline-info m-1 float-right"
-                onClick={this.logout}
-              >
-                {" "}
-                Logout
-              </button>
-              <button
-                type="button"
-                className="btn bg-dark text-white m-1 float-right"
-                disabled
-              >
-                {" "}
-                {user ? user.uid : null}{" "}
-              </button>
-            </div>
-            <br />
-            <br />
-            <hr />
+      <div>
+        <div className="row nav navbar navbar-expand-sm bg-dark navbar-dark text-white justify-content-center">
+          <h6>Digital Menu</h6>
+        </div>
+
+        <div className="row main-page" style={{ backgroundColor: "#f0f8fb" }}>
+          <div
+            className="col-1 flex-fill justify-content-center pr-0 bg-dark"
+            style={{
+              textAlign: "center",
+              color: "white",
+              // borderTop: "1px solid white",
+            }}
+          >
             <button
               type="button"
-              className="btn btn-outline-primary m-1"
+              className="btn w-100 mt-5 text-white"
               onClick={() => this.changeTab(0)}
             >
-              {" "}
-              Food{" "}
+              <i class="fa fa-heart"></i>
+              <p>Food</p>
             </button>
+
             <button
               type="button"
-              className="btn btn-outline-success m-1"
+              className="btn w-100 text-white"
               onClick={() => this.changeTab(2)}
             >
-              Menu
+              <i class="fa fa-book"></i>
+              <p>Menu</p>
             </button>
+
             <button
               type="button"
-              className="btn btn-outline-warning m-1"
+              className="btn w-100 text-white"
               onClick={() => this.changeTab(3)}
             >
-              {" "}
-              Code
+              <i class="fa fa-qrcode"></i>
+              <p>QR Code</p>
             </button>
-            <hr />
+
+            <button
+              type="button"
+              className="btn w-100 text-white"
+              onClick={() => this.changeTab(3)}
+            >
+              <i class="fa fa-user"></i>
+              <p>Account</p>
+            </button>
+
+            <button
+              type="button"
+              className="btn w-100 text-white"
+              onClick={this.logout}
+            >
+              <i class="fa fa-sign-out-alt"></i>
+              <p>Logout</p>
+            </button>
+          </div>
+
+          <div className="p-4 right-dashboard col-11">
             <br />
             <br />
             {tabIndex === 0 && data ? (
