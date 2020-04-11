@@ -156,7 +156,6 @@ export default class Home extends Component {
   }
 
   insertFoodItem() {
-    alert(this.state.veg);
     var length = this.state.data.menu[this.state.foodTypeOption].items
       ? this.state.data.menu[this.state.foodTypeOption].items.length
       : 0;
@@ -600,10 +599,7 @@ export default class Home extends Component {
                                           onClick={() => {
                                             if (
                                               window.confirm(
-                                                "Are you sure you wish to delete this item?" +
-                                                  selectedFood +
-                                                  " " +
-                                                  index
+                                                "Are you sure you wish to delete this item?"
                                               )
                                             )
                                               this.deleteFoodItem(
