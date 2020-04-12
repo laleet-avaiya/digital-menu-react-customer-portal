@@ -33,13 +33,16 @@ export default class App extends Component {
     var { user_login, user } = this.state;
     return (
       <Router>
-        <Route exact path="/signup" component={Signup} />
         {user ? (
           <Switch>
+            <Route exact path="/signup" component={Signup} />
             <Route path="/" component={Home} />
           </Switch>
         ) : (
-          <Route path="/" component={Login} />
+          <Switch>
+            <Route exact path="/signup" component={Signup} />
+            <Route path="/" component={Login} />
+          </Switch>
         )}
       </Router>
     );

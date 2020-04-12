@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import fire from "../config/fire";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-export default class Account extends React.Component {
+export default class Account extends Component {
   constructor() {
     super();
     this.state = {};
@@ -11,6 +9,17 @@ export default class Account extends React.Component {
   render() {
     var { user, data } = this.props;
 
-    return <div>{user && user.uid ? <p>{user.uid}</p> : <p>Guest</p>}</div>;
+    return (
+      <div>
+        {user && user.uid && data ? (
+          <p>
+            {user.uid}
+            {data.restaurant_name}
+          </p>
+        ) : (
+          <p>Guest</p>
+        )}
+      </div>
+    );
   }
 }

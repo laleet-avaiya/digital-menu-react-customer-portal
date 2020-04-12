@@ -5,13 +5,13 @@ export default class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
-      data: null,
+      user: props.user,
+      data: props.data,
       selectedFood: -1,
     };
   }
 
-  UNSAFE_componentWillReceiveProps(props) {
+  componentWillReceiveProps(props) {
     this.setState({ user: props.user, data: props.data });
   }
 
@@ -36,7 +36,6 @@ export default class Menu extends Component {
   }
 
   render() {
-    // var { user, data } = this.props;
     var { user, data, selectedFood } = this.state;
 
     return (
@@ -117,23 +116,6 @@ export default class Menu extends Component {
                                 </td>
 
                                 <td>
-                                  <span
-                                    className="badge badge-pill badge-info m-1"
-                                    onClick={() => {
-                                      if (
-                                        window.confirm(
-                                          "Are you sure you wish to delete this item?"
-                                        )
-                                      )
-                                        this.deleteFoodItem(
-                                          selectedFood,
-                                          index
-                                        );
-                                    }}
-                                  >
-                                    {" "}
-                                    U{" "}
-                                  </span>
                                   <span
                                     className="badge badge-pill badge-danger m-1"
                                     onClick={() => {

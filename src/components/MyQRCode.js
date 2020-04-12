@@ -42,7 +42,7 @@ export default class MyQRCode extends Component {
         <br />
         <button
           type="button"
-          className="btn btn-outline-success my-3"
+          className="btn bg-warning  my-3"
           onClick={() => this.downloadQR()}
         >
           Download QR
