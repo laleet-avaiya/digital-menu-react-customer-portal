@@ -64,7 +64,7 @@ export default class Menu extends Component {
                           >
                             {item.type}
                             <span
-                              className="badge badge-danger ml-1"
+                              className="badge badge-info ml-1"
                               onClick={() => this.updateSelectedFood(index)}
                             >
                               View
