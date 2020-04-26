@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import fire from "../config/fire";
 import { Alert, Card } from "react-bootstrap";
+import { Spinner, Badge } from "react-bootstrap";
 
 export default class Food extends Component {
   constructor(props) {
@@ -116,6 +117,7 @@ export default class Food extends Component {
       this.setState({ non_veg: !this.state.non_veg, veg: true });
     else this.setState({ pure_jain: false, veg: false, non_veg: true });
   }
+
   updatePureVeg() {
     if (this.state.pure_jain)
       this.setState({ pure_jain: !this.state.pure_jain });
@@ -133,60 +135,10 @@ export default class Food extends Component {
     return (
       <div>
         {data ? (
-          <div className="row mx-1">
-            <div className="form-group">
-              <label style={{ fontWeight: "bold", fontFamily: "arial" }}>
-                Food Types
-              </label>
-            </div>
-            <p className="table table-bordered w-100">
-              {data.menu
-                ? data.menu.map((item, index) => {
-                    return (
-                      <p
-                        className="btn btn-light text-capitalize m-1"
-                        style={{
-                          backgroundColor: "#ffffff",
-                          fontWeight: "bold",
-                        }}
-                        key={index}
-                      >
-                        {item.type}
-                        <span
-                          className="badge badge-danger ml-1"
-                          onClick={() => {
-                            if (
-                              window.confirm(
-                                "Are you sure you wish to delete this item?"
-                              )
-                            )
-                              this.deleteFoodType(index);
-                          }}
-                        >
-                          X
-                        </span>
-                      </p>
-                    );
-                  })
-                : null}
-            </p>
-          </div>
-        ) : null}
-        {data ? (
           <div className="row px-4 mt-3">
-            <div className="col-1"></div>
-
-            <div
-              className="col-3 card h-25 p-0"
-              style={{ boxShadow: "5px 6px #888888" }}
-            >
-              <Card
-                border="dark"
-                style={{ width: "100%" }}
-                bg="dark"
-                text="white"
-              >
-                <Card.Header>
+            <div className="col-3 card h-25 p-0">
+              <Card style={{ width: "100%" }}>
+                <Card.Header className="bg-dark text-white">
                   <b>Insert Food Type</b>
                 </Card.Header>
                 <Card.Body>
@@ -207,7 +159,7 @@ export default class Food extends Component {
                     </div>
                     <button
                       type="submit"
-                      className="btn  btn-outline-warning w-100 my-2"
+                      className="btn  btn-outline-primary w-100 my-2"
                       onClick={() => this.insertFoodType()}
                     >
                       Add
@@ -217,19 +169,9 @@ export default class Food extends Component {
               </Card>
             </div>
 
-            <div className="col-2"></div>
-
-            <div
-              className="col-4 card m-0 p-0"
-              style={{ boxShadow: "5px 6px #888888" }}
-            >
-              <Card
-                border="dark"
-                style={{ width: "100%" }}
-                bg="dark"
-                text="white"
-              >
-                <Card.Header>
+            <div className="col-4 card m-0 ml-5 p-0">
+              <Card style={{ width: "100%" }}>
+                <Card.Header className="bg-dark text-white">
                   <b>Add Food Item</b>
                 </Card.Header>
                 <Card.Body>
@@ -329,7 +271,7 @@ export default class Food extends Component {
                           <div>
                             <button
                               type="button"
-                              className="btn btn-outline-warning w-100 mt-2"
+                              className="btn btn-outline-primary w-100 mt-2"
                               onClick={() => this.insertFoodItem()}
                             >
                               Add Item
@@ -342,9 +284,48 @@ export default class Food extends Component {
                 </Card.Body>
               </Card>
             </div>
+            <div className="col-4 ml-5">
+              {data && data.menu
+                ? data.menu.map((item, index) => {
+                    return (
+                      <Alert
+                        key={index}
+                        variant="success"
+                        style={{ fontWeight: 700 }}
+                      >
+                        {item.type}
+                        <span style={{ float: "right" }}>
+                          <Badge variant="secondary">View</Badge>
+                          {"    "}
+                          <Badge
+                            variant="danger"
+                            onClick={() => {
+                              if (
+                                window.confirm(
+                                  "Are you sure you wish to delete this item?"
+                                )
+                              )
+                                this.deleteFoodType(index);
+                            }}
+                          >
+                            Delete
+                          </Badge>{" "}
+                        </span>
+                      </Alert>
+                    );
+                  })
+                : null}
+            </div>
           </div>
         ) : (
-          <p>Loading .... </p>
+          <div className="loading">
+            <Spinner animation="grow" variant="primary" />
+            <Spinner animation="grow" variant="secondary" />
+            <Spinner animation="grow" variant="success" />
+            <Spinner animation="grow" variant="danger" />
+            <Spinner animation="grow" variant="warning" />
+            <Spinner animation="grow" variant="info" />
+          </div>
         )}
       </div>
     );

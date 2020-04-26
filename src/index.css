@@ -129,3 +129,18 @@ label {
 .qr-code-box {
   display: inline-block;
 }
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40vh;
+}
+
+.restaurant-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* margin-top: 40vh; */
+  overflow-y: scroll;
+}

@@ -5,6 +5,7 @@ import Signup from "./components/auth/signup";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/auth/Login";
+import { Spinner } from "react-bootstrap";
 
 export default class App extends Component {
   constructor(props) {

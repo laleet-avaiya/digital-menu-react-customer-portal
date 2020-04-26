@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import fire from "../config/fire";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 import Account from "./Account";
 import MyQRCode from "./MyQRCode";
@@ -59,7 +60,9 @@ export default class Home extends Component {
             restaurant_phone: false,
             contact_person_name: false,
             contact_person_phone: false,
-            date_of_joining: Date.now(),
+            food_type: false,
+            date_of_joining: new Date().toUTCString(),
+            last_updated: new Date().toUTCString(),
             menu: [
               {
                 type: "Drink",
@@ -88,20 +91,71 @@ export default class Home extends Component {
           <div className="p-4 right-dashboard col-11">
             {user ? (
               <Switch>
-                <Route path="/menu">
+                <Route exact path="/menu">
                   <Menu user={user} data={data} />
                 </Route>
-                <Route path="/qr_code">
+                <Route exact path="/qr_code">
                   <MyQRCode user={user} data={data} />
                 </Route>
-                <Route path="/account">
+                <Route exact path="/account">
                   <Account user={user} data={data} />
                 </Route>
-                <Route path="/food">
+                <Route exact path="/food">
                   <Food user={user} data={data} />
                 </Route>
+                <Route exact path="/">
+                  <div>
+                    {data && !data.restaurant_name ? (
+                      <div>Enter Restaurant Name</div>
+                    ) : null}
+                    {data && !data.restaurant_address ? (
+                      <div>Enter Restaurant Address</div>
+                    ) : null}
+                    {data && !data.restaurant_phone ? (
+                      <div>Enter Restaurant Phone</div>
+                    ) : null}
+                    {data && !data.contact_person_name ? (
+                      <div>Enter Contact Person Name</div>
+                    ) : null}
+                    {data && !data.contact_person_phone ? (
+                      <div>Enter Contact Person Phone</div>
+                    ) : null}
+                    <h2>Welcome ...</h2>
+                    <hr />
+                    <section className="ml-5 mt-5">
+                      <h4>
+                        <li>
+                          Mange/Add your restaurant menu from "Food" section.
+                        </li>
+                      </h4>
+                      <h4>
+                        <li>
+                          Delete/Update/View your menu from "Menu" section.
+                        </li>
+                      </h4>
+                      <h4>
+                        <li>Download your QR code from "QR Code" section.</li>
+                      </h4>
+                      <h4>
+                        <li>
+                          Update your restaurant details (Name , Address, Phone
+                          ) from "Account" section.
+                        </li>
+                      </h4>
+                    </section>
+                  </div>
+                </Route>
               </Switch>
-            ) : null}
+            ) : (
+              <div className="loading">
+                <Spinner animation="grow" variant="primary" />
+                <Spinner animation="grow" variant="secondary" />
+                <Spinner animation="grow" variant="success" />
+                <Spinner animation="grow" variant="danger" />
+                <Spinner animation="grow" variant="warning" />
+                <Spinner animation="grow" variant="info" />
+              </div>
+            )}
           </div>
         </div>
       </div>
