@@ -20,7 +20,7 @@ export default class MyQRCode extends Component {
       .replace("image/png", "image/octet-stream");
     let downloadLink = document.createElement("a");
     downloadLink.href = pngUrl;
-    downloadLink.download = this.state.user.uid + ".png";
+    downloadLink.download = this.props.user.uid + ".png";
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
@@ -30,7 +30,7 @@ export default class MyQRCode extends Component {
     var { qr_code_url } = this.state;
 
     return (
-      <div className="qr-code">
+      <div className="qr-code" id="qr-code-box">
         <QRCode
           className="qr-code-box"
           id="qr-code"
