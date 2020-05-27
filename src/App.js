@@ -17,25 +17,7 @@ export default class App extends Component {
   }
 
   componentDidMount() {
-    var url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=harbour&key=AIzaSyBtYtgn4VMfPVe62LWwflxo8ADf2fHKj6M'
-
-    fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "same-origin"
-    }).then(function(response) {
-      response.status     //=> number 100–599
-      response.statusText //=> String
-      response.headers    //=> Headers
-      response.url        //=> String
-    
-      return response.text()
-    }, function(error) {
-      error.message //=> String
-    })
-    // this.authListener();
+    this.authListener();
   }
 
   authListener() {
