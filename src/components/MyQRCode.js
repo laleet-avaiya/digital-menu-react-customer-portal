@@ -7,7 +7,7 @@ export default class MyQRCode extends Component {
     this.state = {
       user: this.props,
       qr_code_url:
-        "http://digitalmenus.in/?restaurant_id=" +
+        "https://menucard.digitalmenus.in/?restaurant_id=" +
         this.props.user.uid,
     };
     this.downloadQR = this.downloadQR.bind(this);
