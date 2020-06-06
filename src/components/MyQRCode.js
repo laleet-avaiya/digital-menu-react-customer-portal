@@ -7,7 +7,7 @@ export default class MyQRCode extends Component {
     this.state = {
       user: this.props,
       qr_code_url:
-        "https://practical-ritchie-dd48fb.netlify.com/?restaurant_id=" +
+        "http://digitalmenus.in/?restaurant_id=" +
         this.props.user.uid,
     };
     this.downloadQR = this.downloadQR.bind(this);
